@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+student-housing-explorer/node_modules/
+
+# Expo
+.expo/
+student-housing-explorer/.expo/
+dist/
+student-housing-explorer/dist/
+web-build/
+student-housing-explorer/web-build/
+expo-env.d.ts
+student-housing-explorer/expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# Debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS / OS
+.DS_Store
+*.pem
+Thumbs.db
+
+# Local env files
+.env*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Backups
+*.bak
