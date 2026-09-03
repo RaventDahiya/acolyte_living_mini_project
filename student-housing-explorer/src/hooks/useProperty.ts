@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchPropertyById } from '@/api/properties';
-import type { Property } from '@/types/property';
 
 export function useProperty(id: string | undefined) {
   return useQuery({

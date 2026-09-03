@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ActivityIndicator, StyleProp, ImageStyle } from 'react-native';
+import { StyleProp, ImageStyle } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 
 interface PropertyImageProps {
@@ -26,13 +26,4 @@ export const PropertyImage = React.memo(function PropertyImage({
       placeholder={placeholder}
     />
   );
-});
-
-const styles = StyleSheet.create({
-  placeholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-  },
 });

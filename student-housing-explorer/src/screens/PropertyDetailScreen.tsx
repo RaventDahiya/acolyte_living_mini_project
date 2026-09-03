@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, ImageStyle } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Image as ExpoImage } from 'expo-image';
 import { useProperty } from '@/hooks/useProperty';
@@ -7,11 +7,14 @@ import { useFavoritesStore } from '@/store/favorites';
 import { RatingStars } from '@/components/RatingStars';
 import { formatCurrency, formatDistance } from '@/utils/formatters';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
 export default function PropertyDetailScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: property, isLoading, isError, error } = useProperty(id);
-  const { favoriteIds, toggleFavorite, isFavorite } = useFavoritesStore();
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const handleBack = useCallback(() => {
     router.back();
@@ -60,13 +63,28 @@ export default function PropertyDetailScreen() {
         {/* Hero Image / Gallery */}
         <View style={styles.imageSection}>
           {hasImages ? (
-            <ExpoImage
-              source={property.images[0]}
-              style={styles.heroImage}
-              contentFit="cover"
-              transition={300}
-              placeholder="blur"
-            />
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onScroll={(e) => {
+                const offsetX = e.nativeEvent.contentOffset.x;
+                const index = Math.round(offsetX / SCREEN_WIDTH);
+                setActiveImageIndex(index);
+              }}
+              scrollEventThrottle={16}
+            >
+              {property.images.map((imgUrl, idx) => (
+                <ExpoImage
+                  key={idx}
+                  source={imgUrl}
+                  style={styles.heroImage}
+                  contentFit="cover"
+                  transition={300}
+                  placeholder="blur"
+                />
+              ))}
+            </ScrollView>
           ) : (
             <View style={[styles.heroImage, styles.imagePlaceholder]}>
               <Text style={styles.placeholderText}>🏠</Text>
@@ -91,7 +109,7 @@ export default function PropertyDetailScreen() {
           {hasImages && property.images.length > 1 && (
             <View style={styles.galleryIndicator}>
               <Text style={styles.galleryText}>
-                {property.images.length} photos · Swipe to view
+                {activeImageIndex + 1} / {property.images.length} photos · Swipe
               </Text>
             </View>
           )}
@@ -219,8 +237,8 @@ const styles = StyleSheet.create({
     height: 300,
   },
   heroImage: {
-    width: '100%',
-    height: '100%',
+    width: SCREEN_WIDTH,
+    height: 300,
   },
   imagePlaceholder: {
     justifyContent: 'center',

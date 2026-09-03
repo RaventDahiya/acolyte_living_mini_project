@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { View, StyleSheet, RefreshControl, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, RefreshControl, SafeAreaView } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import { useProperties } from '@/hooks/useProperties';
@@ -44,6 +44,12 @@ export default function FavoritesScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.topBar}>
+        <Text style={styles.appTitle}>Saved Properties</Text>
+        <Text style={styles.subtitle}>
+          {favorites.length} {favorites.length === 1 ? 'property' : 'properties'} saved
+        </Text>
+      </View>
       <FlashList
         ref={flashListRef}
         data={favorites}
@@ -76,6 +82,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
+  },
+  topBar: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 12,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  appTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1a1a1a',
+  },
+  subtitle: {
+    fontSize: 13,
+    color: '#666',
+    marginTop: 2,
   },
   listContent: {
     paddingHorizontal: 16,

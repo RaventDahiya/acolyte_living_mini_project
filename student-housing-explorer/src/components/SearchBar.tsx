@@ -11,7 +11,7 @@ export const SearchBar = React.memo(function SearchBar({
   placeholder = 'Search by name or address...',
   style,
 }: SearchBarProps) {
-  const { searchQuery, setSearchQuery, clearAll } = useFiltersStore();
+  const { searchQuery, setSearchQuery } = useFiltersStore();
 
   const handleClear = () => {
     setSearchQuery('');

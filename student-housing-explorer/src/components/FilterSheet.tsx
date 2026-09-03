@@ -64,10 +64,16 @@ export const FilterSheet = React.memo(function FilterSheet({
         <View style={styles.handle} />
         {renderHeader()}
         <SafeAreaView style={styles.content}>
-          <SearchBar />
-          <CityChips />
-          <PriceSlider />
-          <DistanceSlider />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={styles.scrollContent}
+          >
+            <SearchBar />
+            <CityChips />
+            <PriceSlider />
+            <DistanceSlider />
+          </ScrollView>
           <TouchableOpacity onPress={handleApply} style={styles.applyButton}>
             <Text style={styles.applyButtonText}>
               Apply {hasActiveFilters ? `(${activeFilterCount})` : ''}
@@ -107,6 +113,9 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     flex: 1,
     paddingBottom: 20,
+  },
+  scrollContent: {
+    paddingBottom: 16,
   },
   header: {
     flexDirection: 'row',

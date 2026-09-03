@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { View, StyleSheet, RefreshControl, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, RefreshControl, SafeAreaView, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useRouter } from 'expo-router';
 import { useProperties } from '@/hooks/useProperties';
@@ -12,7 +12,7 @@ import type { Property } from '@/types/property';
 
 export default function PropertyListScreen() {
   const router = useRouter();
-  const { properties, isLoading, isError, error, refetch } = useProperties();
+  const { properties, isLoading, refetch } = useProperties();
   const { getActiveCount, clearAll } = useFiltersStore();
   const activeFilterCount = getActiveCount();
 
@@ -46,6 +46,30 @@ export default function PropertyListScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Top Header Bar */}
+      <View style={styles.topBar}>
+        <View>
+          <Text style={styles.appTitle}>Student Housing</Text>
+          <Text style={styles.subtitle}>
+            {properties.length} {properties.length === 1 ? 'property' : 'properties'} found
+          </Text>
+        </View>
+        <TouchableOpacity
+          onPress={() => setFilterSheetOpen(true)}
+          style={[styles.filterButton, activeFilterCount > 0 && styles.filterButtonActive]}
+          activeOpacity={0.8}
+        >
+          <Text style={[styles.filterIcon, activeFilterCount > 0 && styles.filterIconActive]}>
+            ⚙️ Filter
+          </Text>
+          {activeFilterCount > 0 && (
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>{activeFilterCount}</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      </View>
+
       <FlashList
         ref={flashListRef}
         data={properties}
@@ -85,6 +109,61 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8f8f8',
+  },
+  topBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 12,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  appTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1a1a1a',
+  },
+  subtitle: {
+    fontSize: 13,
+    color: '#666',
+    marginTop: 2,
+  },
+  filterButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+    gap: 6,
+  },
+  filterButtonActive: {
+    backgroundColor: '#007AFF',
+  },
+  filterIcon: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#333',
+  },
+  filterIconActive: {
+    color: '#fff',
+  },
+  badge: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  badgeText: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#007AFF',
   },
   listContent: {
     paddingHorizontal: 16,
