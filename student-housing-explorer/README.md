@@ -121,7 +121,8 @@ student-housing-explorer/
 │       ├── formatters.ts
 │       ├── filterUtils.ts
 │       └── storage.ts
-├── .eslintrc.js            # ESLint config (flat)
+├── babel.config.js         # Babel config with Reanimated plugin
+├── eslint.config.mjs       # ESLint config (flat)
 ├── .prettierrc             # Prettier config
 ├── tsconfig.json           # TypeScript config with path aliases
 └── package.json
